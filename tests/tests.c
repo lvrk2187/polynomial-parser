@@ -27,12 +27,10 @@ void EXPECTED_POLY(polynomial p, int argc, ...) {
     actual_elements_in_c_mono[2] = p.items[i].e_operator;
     actual_elements_in_c_mono[3] = p.items[i].exponent;
 
-    for (int m = 0; m < NUMBER_OF_ELEMENTS_IN_A_MONOMIAL; m++) expected_elements_in_c_mono[m] = va_arg(elements, int);
-
      for (int k = 0; k < NUMBER_OF_ELEMENTS_IN_A_MONOMIAL; k++) {
 
         int actual = actual_elements_in_c_mono[k];
-        int expected = expected_elements_in_c_mono[k];
+        int expected = va_arg(elements, int);
 
         if (actual == expected) printf("passed: ");
         else printf("failed: ");
