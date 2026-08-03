@@ -10,6 +10,13 @@
   //  int exponent
 #define NUMBER_OF_ELEMENTS_IN_A_MONOMIAL 4
 
+//string test data for possible polynomials
+char p_string_1[] = "x^2 + 43x + 22";
+char p_string_2[] = "x^2 + 3x^5 - 3 + 2x^0";
+char p_string_3[] = "32";
+char p_string_4[] = "4x^2 + 3x^5 - 3x^8 + 2x";
+
+
 bool EXPECTED_POLY(polynomial p, int argc, ...) {
 
   bool pass = true;
@@ -44,30 +51,38 @@ bool EXPECTED_POLY(polynomial p, int argc, ...) {
   return pass;
 }
 
+void assert_with_print(bool condition, const char* message) {
+  assert(condition);
+  printf("%s: PASSED\n", message);
+}
+
+void tests_for_size_of_poly() {
+
+  assert_with_print(sizenofpoly(p_string_1) == 3, "p_string1 length TEST PASSED");
+  assert_with_print(sizenofpoly(p_string_2) == 4, "p_string2 length TEST PASSED");
+  assert_with_print(sizenofpoly(p_string_3) == 1, "p_string3 length TEST PASSED");
+}
+
 void poly_one() {
-  char p_string[] = "x^2 + 3x^5 - 3x^8 + 2x^0";
-  polynomial *p = parser(p_string);
+  polynomial *p = parser(p_string_4);
   EXPECTED_POLY (
                   *p,
-                  sizeofpoly(p_string) * (int) (NUMBER_OF_ELEMENTS_IN_A_MONOMIAL),
-                   1, 1, 1, 2,
+                  sizeofpoly(p_string_4) * (int) (NUMBER_OF_ELEMENTS_IN_A_MONOMIAL),
+                   1, 4, 1, 2,
                    1, 3, 1, 5,
                   -1, 3, 1, 8,
-                   1, 2, 1, 0
+                   1, 2, 1, 1
                 );
     
   polynomial_free(p);
 }
 
 void poly_two() {
-  
+
 }
 
 int main() {
- 
-  // poly_one();
-  char p_string_1[] = "x^2 + 43x + 22";
-  char p_string_2[] = "x^2 + 3x^5 - 3 + 2x^0";
-  char p_string_3[] = "32";
-  printf("%d", sizenofpoly(p_string_3));
+
+  tests_for_size_of_poly(); 
+  poly_one();
 }
