@@ -6,7 +6,7 @@
 #define POLYNOMIAL
 
 typedef struct {
-  int c_operator;
+  int c_operator; //-1: minus & 1: plus 
   int coefficient;
   int e_operator;
   int exponent;
