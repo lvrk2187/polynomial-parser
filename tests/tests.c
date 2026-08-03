@@ -23,19 +23,25 @@ bool EXPECTED_POLY(polynomial p, int argc, ...) {
   va_list elements;
   va_start(elements, argc);
 
-  int expected_elements_in_c_mono[NUMBER_OF_ELEMENTS_IN_A_MONOMIAL];
   int actual_elements_in_c_mono[NUMBER_OF_ELEMENTS_IN_A_MONOMIAL];
 
   for (int i = 0; i < (argc >> 2); i++) {
 
-    actual_elements_in_c_mono[0] = p.items[i].c_operator;
-    actual_elements_in_c_mono[1] = p.items[i].coefficient;
-    actual_elements_in_c_mono[2] = p.items[i].e_operator;
-    actual_elements_in_c_mono[3] = p.items[i].exponent;
+    int actual_elements[NUMBER_OF_ELEMENTS_IN_A_MONOMIAL] = {
+      p.items[i].c_operator,
+      p.items[i].coefficient,
+      p.items[i].e_operator,
+      p.items[i].exponent
+    };
+
+    // actual_elements_in_c_mono[0] = p.items[i].c_operator;
+    // actual_elements_in_c_mono[1] = p.items[i].coefficient;
+    // actual_elements_in_c_mono[2] = p.items[i].e_operator;
+    // actual_elements_in_c_mono[3] = p.items[i].exponent;
 
      for (int k = 0; k < NUMBER_OF_ELEMENTS_IN_A_MONOMIAL; k++) {
 
-        int actual = actual_elements_in_c_mono[k];
+        int actual = actual_elements[k];
         int expected = va_arg(elements, int);
 
         if (actual == expected) {
@@ -48,6 +54,9 @@ bool EXPECTED_POLY(polynomial p, int argc, ...) {
         printf("expected %d, actual %d\n", expected, actual);
     }    
   }
+
+  va_end(elements);
+  
   return pass;
 }
 
