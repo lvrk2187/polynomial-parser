@@ -8,12 +8,11 @@
   //  int coefficient
   //  int e_operator
   //  int exponent
-  
 #define NUMBER_OF_ELEMENTS_IN_A_MONOMIAL 4
 
+bool EXPECTED_POLY(polynomial p, int argc, ...) {
 
-void EXPECTED_POLY(polynomial p, int argc, ...) {
-
+  bool pass = true;
   va_list elements;
   va_start(elements, argc);
 
@@ -32,17 +31,20 @@ void EXPECTED_POLY(polynomial p, int argc, ...) {
         int actual = actual_elements_in_c_mono[k];
         int expected = va_arg(elements, int);
 
-        if (actual == expected) printf("passed: ");
-        else printf("failed: ");
+        if (actual == expected) {
+          printf("passed: ");
+        } else {
+          pass = false;
+          printf("failed: ");
+        }
 
         printf("expected %d, actual %d\n", expected, actual);
     }    
   }
+  return pass;
 }
 
 void poly_one() {
-
-
   char p_string[] = "x^2 + 3x^5 - 3x^8 + 2x^0";
   polynomial *p = parser(p_string);
   EXPECTED_POLY (
@@ -57,10 +59,15 @@ void poly_one() {
   polynomial_free(p);
 }
 
+void poly_two() {
+  
+}
+
 int main() {
  
-  poly_one();
-  char p_string_1[] = "x^2 + 3x + 2x^0";
-
-  char p_string_2[] = "x^2 + 3x^5 - 3x^8 + 2x^0";
+  // poly_one();
+  char p_string_1[] = "x^2 + 43x + 22";
+  char p_string_2[] = "x^2 + 3x^5 - 3 + 2x^0";
+  char p_string_3[] = "32";
+  printf("%d", sizenofpoly(p_string_3));
 }
