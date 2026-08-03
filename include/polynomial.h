@@ -17,6 +17,17 @@ typedef struct {
   monomial* items;
 } polynomial;
 
+//states for mini state machine in polynomial size
+typedef enum {
+  STRING_START,
+  PARSING_START_OPERATOR,
+  PARSING_NUMBER,
+  PARSING_END_OPERATOR,
+  PASS
+} MATCH_STATE;
+
+int sizenofpoly(char *expr);
+
 //printing functions
 void print_mono (monomial m);
 void print_poly (polynomial p);
