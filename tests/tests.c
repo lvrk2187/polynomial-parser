@@ -15,6 +15,7 @@ char p_string_1[] = "x^2 + 43x + 22";
 char p_string_2[] = "x^2 + 3x^5 - 3 + 2x^0";
 char p_string_3[] = "32";
 char p_string_4[] = "4x^2 + 3x^5 - 3x^8 + 2x";
+char p_string_5[] = "-37x^2 - 3x^-82 + 33x";
 
 
 bool EXPECTED_POLY(polynomial p, int argc, ...) {
@@ -75,23 +76,36 @@ void tests_for_size_of_poly() {
 void poly_one() {
   polynomial *p = parser(p_string_4);
   EXPECTED_POLY (
-                  *p,
-                  sizeofpoly(p_string_4) * (int) (NUMBER_OF_ELEMENTS_IN_A_MONOMIAL),
-                   1, 4, 1, 2,
-                   1, 3, 1, 5,
-                  -1, 3, 1, 8,
-                   1, 2, 1, 1
-                );
+    *p,
+    sizeofpoly(p_string_4) * (NUMBER_OF_ELEMENTS_IN_A_MONOMIAL),
+     1, 4, 1, 2,
+     1, 3, 1, 5,
+    -1, 3, 1, 8,
+     1, 2, 1, 1
+  );
     
   polynomial_free(p);
 }
 
 void poly_two() {
+  polynomial *p = parser(p_string_5);
 
+  EXPECTED_POLY(
+    *p,
+    sizeofpoly(p_string_5) * (NUMBER_OF_ELEMENTS_IN_A_MONOMIAL),
+    -1, 37, 1, 2,
+    -1, 3, -1, 82,
+     1, 33, 1, 1 
+  );
+
+  polynomial_free(p);
+  
 }
 
 int main() {
 
   tests_for_size_of_poly(); 
   poly_one();
+  printf("\n");
+  poly_two();
 }
