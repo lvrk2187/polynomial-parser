@@ -61,16 +61,19 @@ bool EXPECTED_POLY(polynomial p, int argc, ...) {
   return pass;
 }
 
-void assert_with_print(bool condition, const char* message) {
-  assert(condition);
-  printf("%s: PASSED\n", message);
+void assert_with_print(bool condition, const char* given_expr_test) {
+  if (condition) printf("passed: ");
+  else printf("failed: ");
+
+  printf("for %s\n", given_expr_test);
+  
 }
 
 void tests_for_size_of_poly() {
 
-  assert_with_print(sizenofpoly(p_string_1) == 3, "p_string1 length TEST PASSED");
-  assert_with_print(sizenofpoly(p_string_2) == 4, "p_string2 length TEST PASSED");
-  assert_with_print(sizenofpoly(p_string_3) == 1, "p_string3 length TEST PASSED");
+  assert_with_print(sizenofpoly(p_string_1) == 3, p_string_1);
+  assert_with_print(sizenofpoly(p_string_2) == 4, p_string_2);
+  assert_with_print(sizenofpoly(p_string_3) == 1, p_string_3);
 }
 
 void poly_one() {
@@ -99,12 +102,12 @@ void poly_two() {
   );
 
   polynomial_free(p);
-  
 }
 
 int main() {
 
   tests_for_size_of_poly(); 
+  printf("\n");
   poly_one();
   printf("\n");
   poly_two();
