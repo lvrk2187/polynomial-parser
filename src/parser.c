@@ -28,7 +28,7 @@ bool isoperator(char _c) {
 }
 
 void push_num(char _c, int *store) {
-  *store *= 10;
+  *store *= 10; 
   *store += _c - '0';
 }
 
@@ -50,13 +50,12 @@ void check_end_state(STATE s, polynomial *m) {
     */
       case START: 
       case PARSING_COEFFICIENT_OPERATOR: 
-      case PARSING_COEFFICIENT: 
       case EXPONENT_FOUND: 
       case PARSING_EXPONENT_OPERATOR: 
       case ERROR: printf("ERROR parsing polynomial! - "); exit(POLYNOMIAL_PARSING_ERROR); break;
-      
-
-      case VARIABLE_FOUND: m->items[m->size-1].exponent = 1; break;      
+    
+      case PARSING_COEFFICIENT: m->items[m->size-1].exponent = 0; break;
+      case VARIABLE_FOUND: m->items[m->size-1].exponent = 1; break;        
       case PARSING_EXPONENT: break;
   }
 }
@@ -118,6 +117,10 @@ void modify_state(char next_c, STATE *state, polynomial *poly, int *p_pointer) {
         */
         if (poly->items[*p_pointer].coefficient == 0) {*state = ERROR; return;} 
         *state = VARIABLE_FOUND;
+      } else if (isoperator(next_c)) {
+        
+        start_new_term_and_change_state(p_pointer, PARSING_COEFFICIENT_OPERATOR, state);                
+          
       } else {
         *state = ERROR;
       }  
@@ -201,7 +204,7 @@ void modify_state(char next_c, STATE *state, polynomial *poly, int *p_pointer) {
 polynomial *parser(char *expr) {
 
 
-  polynomial *m = poly_innit(sizeofpoly(expr));
+  polynomial *m = poly_innit(sizenofpoly(expr));
   int polynomial_pointer = 0;
 
   STATE *state;
@@ -211,6 +214,8 @@ polynomial *parser(char *expr) {
   for (int i = 0; i < strlen(expr); i++) {
     if (expr[i] != ' ') {
       modify_state(expr[i], state, m, &polynomial_pointer);
+      // printf("%c: ", expr[i]);
+      // print_state(*state);
     }
   }
 
