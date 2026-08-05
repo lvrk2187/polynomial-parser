@@ -36,5 +36,15 @@ void print_poly (polynomial p);
 int sizeofpoly         (char *expr);
 polynomial* poly_innit (size_t size);
 void polynomial_free   (polynomial *p);
+
+//praxis
+
+struct solutions_for_quadratic {
+  float solution1;
+  float solution2;
+  u_int8_t number_of_solutions;
+};
+
+struct solutions_for_quadratic solve_quadratic (polynomial p); 
  
 #endif

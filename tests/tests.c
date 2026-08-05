@@ -134,8 +134,16 @@ void poly_four() {
 int main() {
 
   // tests_for_size_of_poly(); 
-  poly_one();
-  poly_two();
-  poly_three();
-  poly_four();
+  // poly_one();
+  // poly_two();
+  // poly_three();
+  // poly_four();
+
+  // polynomial *p = parser("x^2 - 3x + 2");
+  // polynomial *p = parser("x^2 - 4x + 4");
+  
+  // print_poly(*p);
+
+  // struct solutions_for_quadratic s = solve_quadratic(*p);
+  // printf("%.1f", s.solution1);
 }

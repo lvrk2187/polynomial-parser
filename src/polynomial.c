@@ -2,6 +2,7 @@
 #include "../include/parser.h"
 #include <ctype.h>
 #include <string.h>
+#include <math.h>
 
 void print_mono(monomial m) {
   printf("coef: %d\nexponent: %d\n", m.coefficient * m.c_operator, m.exponent * m.e_operator);
@@ -122,4 +123,71 @@ polynomial* poly_innit(size_t size) {
 void polynomial_free(polynomial *p) {
   free(p->items);
   free(p);
+}
+
+//ax^2 + bx + c
+enum {
+  a = 2,
+  b = 1,
+  c = 0
+} quadratic_term;
+
+
+struct solutions_for_quadratic solve_quadratic(polynomial p) {
+
+  u_int8_t number_of_terms_quadratic     = 3;
+  u_int8_t number_of_solutions_quadratic = 0;
+
+  if (p.size > number_of_terms_quadratic) {
+    printf("invalid arguments");
+    exit(1);
+  }
+  
+  //list lays it out as {c, b, a} as it gets using raw exponent
+  int terms[number_of_terms_quadratic];
+
+  //get a, b c
+  for (int i = 0; i < p.size; i++) {
+    int exponent = p.items[i].e_operator * p.items[i].exponent;
+    if (exponent >= 0 && exponent < number_of_terms_quadratic) {
+      terms[exponent] = p.items[i].c_operator * p.items[i].coefficient;
+    } else {
+      printf("does not follow structure of a quadratic");
+      exit(1);
+    }
+  }
+
+  if (terms[a] == 0) {
+    printf("a cannot be 0");
+    exit(1);
+  }
+
+  //discriminant: b^2 - 4ac
+  //  b^2 - 4ac > 0 -> 2 real sol
+  //  b^2 - 4ac = 0 -> 1 real sol
+  //  b^2 - 4ac < 0 -> 0 real sol
+  int discriminat = pow(terms[b], 2) - (4 * terms[a] * terms[c]);
+
+  if (discriminat > 0) {
+    number_of_solutions_quadratic = 2;  
+  } else if (discriminat == 0) {
+    number_of_solutions_quadratic = 1;
+  } else if (discriminat < 0) {
+    number_of_terms_quadratic = 0;
+  }
+  
+  struct solutions_for_quadratic *solutions = malloc(sizeof(struct solutions_for_quadratic));
+  
+  solutions->number_of_solutions = number_of_solutions_quadratic;
+
+  //quadratic equation
+  if (number_of_solutions_quadratic == 0) {
+    solutions->solution1 = NAN;
+    solutions->solution2 = NAN;
+  } else {  
+    solutions->solution1 = (-terms[b] + sqrt(pow(terms[b], 2) - 4 * terms[a] * terms[c])) / 2 * terms[a];
+    solutions->solution2 = (-terms[b] - sqrt(pow(terms[b], 2) - 4 * terms[a] * terms[c])) / 2 * terms[a];
+  }
+  return *solutions;
+
 }
