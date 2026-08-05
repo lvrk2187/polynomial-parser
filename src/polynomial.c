@@ -173,7 +173,7 @@ struct solutions_for_quadratic solve_quadratic(polynomial p) {
   } else if (discriminat == 0) {
     number_of_solutions_quadratic = 1;
   } else if (discriminat < 0) {
-    number_of_terms_quadratic = 0;
+    number_of_solutions_quadratic = 0;
   }
   
   struct solutions_for_quadratic *solutions = malloc(sizeof(struct solutions_for_quadratic));

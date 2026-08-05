@@ -9,8 +9,6 @@
   //  int e_operator
   //  int exponent
 #define NUMBER_OF_ELEMENTS_IN_A_MONOMIAL 4
-#define RED
-#define GREEN
 
 //string test data for possible polynomials
 char p_string_1[] = "x^2 + 43x + 22";
@@ -21,7 +19,7 @@ char p_string_5[] = "-37x^2 - 3x^-82 + 33x";
 char p_string_6[] = "-3x^2 + 23";
 
 
-bool EXPECTED_POLY(polynomial p, int argc, ...) {
+bool HANDLE_EXPECTED_POLY(polynomial p, int argc, ...) {
 
   bool pass = true;
   va_list elements;
@@ -75,7 +73,7 @@ void tests_for_size_of_poly() {
 
 void poly_one() {
   polynomial *p = parser(p_string_4);
-  EXPECTED_POLY (
+  HANDLE_EXPECTED_POLY (
     *p,
     sizeofpoly(p_string_4) * (NUMBER_OF_ELEMENTS_IN_A_MONOMIAL),
      1, 4, 1, 2,
@@ -90,7 +88,7 @@ void poly_one() {
 void poly_two() {
   polynomial *p = parser(p_string_5);
 
-  EXPECTED_POLY(
+  HANDLE_EXPECTED_POLY(
     *p,
     sizeofpoly(p_string_5) * (NUMBER_OF_ELEMENTS_IN_A_MONOMIAL),
     -1, 37, 1, 2,
@@ -105,7 +103,7 @@ void poly_two() {
 void poly_three() {
   polynomial *p = parser(p_string_1);
 
-  EXPECTED_POLY(
+  HANDLE_EXPECTED_POLY(
     *p,
     sizenofpoly(p_string_1) * (NUMBER_OF_ELEMENTS_IN_A_MONOMIAL),
     1, 1, 1, 2,
@@ -121,7 +119,7 @@ void poly_four() {
   
   polynomial *p = parser(p_string_6);
 
-  EXPECTED_POLY(
+  HANDLE_EXPECTED_POLY(
     *p,
     sizenofpoly(p_string_6) * (NUMBER_OF_ELEMENTS_IN_A_MONOMIAL),
     -1, 3, 1, 2,
