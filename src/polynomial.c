@@ -186,7 +186,7 @@ struct solutions_for_quadratic *solve_quadratic(polynomial p) {
     solutions->array_of_solutions[0] = (-terms[b] + sqrt(pow(terms[b], 2) - 4 * terms[a] * terms[c])) / 2 * terms[a];
 
     if (number_of_solutions_quadratic == 2) {
-      solutions->array_of_solutions[0] = (-terms[b] - sqrt(pow(terms[b], 2) - 4 * terms[a] * terms[c])) / 2 * terms[a];
+      solutions->array_of_solutions[1] = (-terms[b] - sqrt(pow(terms[b], 2) - 4 * terms[a] * terms[c])) / 2 * terms[a];
     }
   } 
     
