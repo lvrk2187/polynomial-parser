@@ -14,8 +14,6 @@
 char p_string_1[] = "x^2 + 43x + 22";
 char p_string_2[] = "x^2 + 3x^5 - 3 + 2x^0";
 char p_string_3[] = "32";
-char p_string_4[] = "4x^2 + 3x^5 - 3x^8 + 2x";
-char p_string_5[] = "-37x^2 - 3x^-82 + 33x";
 char p_string_6[] = "-3x^2 + 23";
 
 
@@ -48,13 +46,43 @@ bool HANDLE_EXPECTED_POLY(polynomial p, int argc, ...) {
 
         printf("expected %d, actual %d\n", expected, actual);
     }    
-  }
+   }
 
   printf("\n");
   va_end(elements);
   
   return pass;
 }
+
+bool HANDLE_QUADRATIC_SOLUTION(polynomial p, int argc, ...) {
+  struct solutions_for_quadratic *s = solve_quadratic(p);
+
+  va_list actual_solutions;
+  va_start(actual_solutions, argc);
+  bool pass = true;
+
+  if (s->number_of_solutions != argc) {
+    printf("invalid number of solutions");
+  }
+
+  for (int i = 0; i < argc; i++) {
+    double expected = va_arg(actual_solutions, double);
+
+    if (expected == s->array_of_solutions[i]) {
+      printf("passed");
+    } else {
+      pass = false;
+      printf("failed");
+    }
+
+    printf(": actual %.1f, expected %.1f\n", s->array_of_solutions[i], expected);
+  }
+
+  va_end(actual_solutions);
+  free_solutions_for_quadratic(s);
+  return pass;
+}
+
 
 void assert_with_print(bool condition, const char* given_expr_test) {
   if (condition) printf("passed: ");
@@ -64,6 +92,7 @@ void assert_with_print(bool condition, const char* given_expr_test) {
   
 }
 
+//redo tests for sizenofpoly()
 void tests_for_size_of_poly() {
 
   assert_with_print(sizenofpoly(p_string_1) == 3, p_string_1);
@@ -72,6 +101,7 @@ void tests_for_size_of_poly() {
 }
 
 void poly_one() {
+  char p_string_4[] = "4x^2 + 3x^5 - 3x^8 + 2x";
   polynomial *p = parser(p_string_4);
   HANDLE_EXPECTED_POLY (
     *p,
@@ -86,6 +116,7 @@ void poly_one() {
 }
 
 void poly_two() {
+  char p_string_5[] = "-37x^2 - 3x^-82 + 33x";
   polynomial *p = parser(p_string_5);
 
   HANDLE_EXPECTED_POLY(
@@ -129,6 +160,31 @@ void poly_four() {
   polynomial_free(p);
 }
 
+void solve_poly1() {
+   
+  polynomial *p = parser("x^2 - 3x + 2");
+
+  HANDLE_QUADRATIC_SOLUTION
+    (*p,
+      2,
+      2.0f, 1.0f
+    );
+
+  polynomial_free(p);
+}
+
+void solve_poly2() {
+  
+  polynomial *p = parser("x^2 - 4x + 4");
+
+  HANDLE_QUADRATIC_SOLUTION
+    (*p,
+     1,
+   2.0f);
+
+  polynomial_free(p);
+}
+
 int main() {
 
   // tests_for_size_of_poly(); 
@@ -137,11 +193,10 @@ int main() {
   // poly_three();
   // poly_four();
 
-  // polynomial *p = parser("x^2 - 3x + 2");
-  // polynomial *p = parser("x^2 - 4x + 4");
+  solve_poly2();
+
   
   // print_poly(*p);
 
-  // struct solutions_for_quadratic s = solve_quadratic(*p);
-  // printf("%.1f", s.solution1);
+
 }
