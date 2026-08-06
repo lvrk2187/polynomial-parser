@@ -40,11 +40,11 @@ void polynomial_free   (polynomial *p);
 //praxis
 
 struct solutions_for_quadratic {
-  float solution1;
-  float solution2;
+  double *array_of_solutions;
   u_int8_t number_of_solutions;
 };
 
-struct solutions_for_quadratic solve_quadratic (polynomial p); 
+struct solutions_for_quadratic *solve_quadratic (polynomial p); 
+struct solutions_for_quadratic free_solutions_for_quadratic(struct solutions_for_quadratic *s);
  
 #endif

@@ -133,7 +133,7 @@ enum {
 } quadratic_term;
 
 
-struct solutions_for_quadratic solve_quadratic(polynomial p) {
+struct solutions_for_quadratic *solve_quadratic(polynomial p) {
 
   u_int8_t number_of_terms_quadratic     = 3;
   u_int8_t number_of_solutions_quadratic = 0;
@@ -179,15 +179,16 @@ struct solutions_for_quadratic solve_quadratic(polynomial p) {
   struct solutions_for_quadratic *solutions = malloc(sizeof(struct solutions_for_quadratic));
   
   solutions->number_of_solutions = number_of_solutions_quadratic;
+  solutions->array_of_solutions = malloc(sizeof(double) * number_of_solutions_quadratic);
 
   //quadratic equation
-  if (number_of_solutions_quadratic == 0) {
-    solutions->solution1 = NAN;
-    solutions->solution2 = NAN;
-  } else {  
-    solutions->solution1 = (-terms[b] + sqrt(pow(terms[b], 2) - 4 * terms[a] * terms[c])) / 2 * terms[a];
-    solutions->solution2 = (-terms[b] - sqrt(pow(terms[b], 2) - 4 * terms[a] * terms[c])) / 2 * terms[a];
-  }
-  return *solutions;
+  if (number_of_solutions_quadratic > 0){  
+    solutions->array_of_solutions[0] = (-terms[b] + sqrt(pow(terms[b], 2) - 4 * terms[a] * terms[c])) / 2 * terms[a];
 
+    if (number_of_solutions_quadratic == 2) {
+      solutions->array_of_solutions[0] = (-terms[b] - sqrt(pow(terms[b], 2) - 4 * terms[a] * terms[c])) / 2 * terms[a];
+    }
+  } 
+    
+  return solutions;
 }
